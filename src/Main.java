@@ -17,7 +17,6 @@ public class Main extends Application{
 
     private Stage window;
     private Scene scene1, scene2;
-
     private Button           loadPamakBookButton, addFriendButton, findMutualFriendButton, printFriendsButton, addToGroupButton, addToClosedGroupButton, backToMainPageButton, createUserButton, logInButton, savePamakBookButton, editUsersButton;
     private TextField        userNameTextField, mailTextField;
     private ComboBox<String> comboBox1, comboBox2;
@@ -106,12 +105,12 @@ public class Main extends Application{
                     tempUser = u;
                 }
 
-            if(flag == true) {
-                AlertBox.display("User finder", "User " + tempUser.getName() + " found");
+            if(flag) {
+                AlertBox.display("User " + tempUser.getName() + " found");
                 UserPage.display(tempUser, pamakBookUsers);
             }
             else
-                AlertBox.display("User finder", "User did not found");
+                AlertBox.display("User did not found");
         });
 
 
@@ -123,8 +122,6 @@ public class Main extends Application{
                 objectOutputStream.close();
                 fileOutputStream.close();
                 console.setTextArea("Pamak Book has been saved");
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -145,9 +142,7 @@ public class Main extends Application{
                     text += u.getName() + " " + u.getEmail() + "\n";
                 console.setTextArea(text);
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         });

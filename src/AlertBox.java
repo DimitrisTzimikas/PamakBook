@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 public class AlertBox {
 
-    public static void display(String title, String message) {
+    public static void display(String message) {
 
         /**
          * Initialize Stage
@@ -22,7 +22,7 @@ public class AlertBox {
          * Create Window
          */
         window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle(title);
+        window.setTitle("User finder");
         window.setMinWidth(250);
         window.setMinHeight(150);
 

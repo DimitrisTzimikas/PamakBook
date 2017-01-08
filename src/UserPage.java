@@ -71,7 +71,7 @@ public class UserPage {
         Collections.sort(tempArrayListOfUsersPost);
 
         for(String s : tempArrayListOfUsersPost)
-            message += s.toString() +"\n";
+            message += s +"\n";
 
         textArea2.setText(message);
 
