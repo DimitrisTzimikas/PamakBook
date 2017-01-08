@@ -329,6 +329,7 @@ public class Main extends Application{
         window.setScene(scene1);
         window.setTitle("Main Page");
         window.getIcons().add(new Image("uom.gif"));
+        createUserButton.requestFocus();
         window.centerOnScreen();
     }
 }

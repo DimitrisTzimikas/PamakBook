@@ -25,6 +25,7 @@ public class Console {
          */
         textArea.setEditable(false);
         textArea.setText("Welcome to Pamak Book");
+        textArea.setWrapText(true);
 
         /**
          * Panel

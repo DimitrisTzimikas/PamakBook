@@ -91,16 +91,21 @@ public class User implements Serializable {
         String text = "";
         text += "Mutual friends of " + this.getName() + " and " + aUser.getName() + "\n";
 
-        for(User u1 : this.arrayListOfUserFriends)
-            for(User u2 : aUser.arrayListOfUserFriends) {
-                if(u1.getName().equals(u2.getName()) && u1.getEmail().equals(u2.getEmail())) {
-                    temp.add(u2);
-                    count ++;
-                    text += count + ": " +u2.getName() + "\n";
-                    break;
+        if(!this.name.equals(aUser.getName())){
+            for(User u1 : this.arrayListOfUserFriends)
+                for(User u2 : aUser.arrayListOfUserFriends) {
+                    if(u1.getName().equals(u2.getName()) && u1.getEmail().equals(u2.getEmail())) {
+                        temp.add(u2);
+                        count ++;
+                        text += count + ": " +u2.getName() + "\n";
+                        break;
+                    }
                 }
-            }
-        console.setTextArea(text);
+            console.setTextArea(text);
+        }
+        else
+            console.setTextArea("You selected yourself!");
+
         return temp;
     }
 

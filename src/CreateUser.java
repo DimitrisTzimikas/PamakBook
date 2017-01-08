@@ -82,6 +82,7 @@ public class CreateUser {
          */
         window.setScene(scene);
         window.getIcons().add(new Image("uom.gif"));
+        commitButton.requestFocus();
         window.centerOnScreen();
         window.showAndWait();
     }
