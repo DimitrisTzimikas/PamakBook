@@ -1,21 +1,14 @@
 import java.util.ArrayList;
 
-
 public class Group {
 
     protected String name, description;
     protected ArrayList<User> arrayGroup = new ArrayList<>();
 
-    public Group(String name, String description, Console console) {
-        this.name = name;
-        this.description = description;
-    }
-
     public Group(String name, String description) {
         this.name = name;
         this.description = description;
     }
-
 
     /**
      * Ελέγχει αν είναι μέλος του γκρουπ ή όχι
@@ -42,7 +35,7 @@ public class Group {
             console.setTextArea(aUser.getName() + " has successfully enrolled in group " + this.name);
         }
         else
-            console.setTextArea("\n" + aUser.getName() + " is already member of the Web Gurus group.\n");
+            console.setTextArea(aUser.getName() + " is already member of the Web Gurus group.\n");
     }
 
     /**
@@ -50,7 +43,7 @@ public class Group {
      */
     public void printInfo(Console console) {
         String text = "";
-        text += ("Members of group " + this.name);
+        text += ("Members of group " + this.name + "\n");
         int count = 0;
 
         for(User u : arrayGroup) {

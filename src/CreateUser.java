@@ -49,7 +49,7 @@ public class CreateUser {
 
             if (flag) {
                 pamakBookUsers.add(new User(userNameTextField.getText(), emailTextField.getText(), console));
-                console.setTextArea("User has been created");
+                console.setTextArea("User " + userNameTextField.getText() + " has been created");
             }
         });
 

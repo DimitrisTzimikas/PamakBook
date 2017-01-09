@@ -1,13 +1,12 @@
 import java.io.Serializable;
 import java.util.ArrayList;
 
-
 public class User implements Serializable {
 
     private String name;
     private String email;
     private ArrayList<User> arrayListOfUserFriends = new ArrayList<>();
-    private ArrayList<String> arrayListOfUserPost = new ArrayList<>();
+    private ArrayList<String> arrayListOfUserPost  = new ArrayList<>();
 
 
     /**

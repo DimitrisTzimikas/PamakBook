@@ -6,25 +6,28 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-
 public class Console {
 
     private TextArea textArea = new TextArea();
+    private Stage    window   = new Stage();
 
     public void setTextArea(String textArea) {
         this.textArea.setText(textArea);
     }
 
+    public void closeConsole() {
+        window.close();
+    }
+
     public void consoleDisplay() {
 
-        Stage window = new Stage();
         Scene scene;
 
         /**
          * Text Area
          */
-        textArea.setEditable(false);
         textArea.setText("Welcome to Pamak Book");
+        textArea.setEditable(false);
         textArea.setWrapText(true);
 
         /**

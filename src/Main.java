@@ -8,64 +8,42 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.util.ArrayList;
 
-
 public class Main extends Application{
 
     public static void main(String[] args) {
         launch(args);
     }
 
-    private Stage window;
-    private Scene scene1, scene2;
-    private Button           loadPamakBookButton, addFriendButton, findMutualFriendButton, printFriendsButton, addToGroupButton, addToClosedGroupButton, backToMainPageButton, createUserButton, logInButton, savePamakBookButton, editUsersButton;
-    private TextField        userNameTextField, mailTextField;
+    private Stage            window;
+    private Scene            mainPageScene, editUserScene;
+    private Button           loadPamakBookButton, addFriendButton, findMutualFriendButton, printFriendsButton,
+                             addToGroupButton,    logInButton,     backToMainPageButton,   createUserButton,
+                             savePamakBookButton, editUsersButton, printGroupButton,       printClosedGroupButton,  addToClosedGroupButton;
+    private TextField        userNameTextField, emailTextField;
     private ComboBox<String> comboBox1, comboBox2;
-    private boolean          flag = false;
-    private static ArrayList<User> arrayList;
+
+    private ArrayList<User> pamakBookUsers = new ArrayList<>();
+    private boolean         flag = false;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Console console = new Console();
-        console.consoleDisplay();
+        window = primaryStage;
 
         /**
-         * Initialize Users and Groups
+         * Initialize Users and Groups and Console
          */
-        ArrayList<User> pamakBookUsers = new ArrayList<>();
-
-        User u1 = new User("Makis", "it1698@uom.edu.gr", console);
-        User u2 = new User("Petros", "it1624@uom.edu.gr", console);
-        User u3 = new User("Maria", "it16112@uom.edu.gr", console);
-        User u4 = new User("Gianna", "it16133@uom.edu.gr", console);
-        User u5 = new User("Nikos", "it1658@uom.edu.gr", console);
-        User u6 = new User("Babis", "it16104@uom.edu.gr", console);
-
-        u2.addToArrayListOfUserPost("06/01/2017 17:14:56, Petros \nΠολύ χιόνισε σήμερα!");
-        u3.addToArrayListOfUserPost("05/01/2017 16:15:42, Maria \nΞέρουμε αν θα λειτουργήσει το Πανεπιστήμιο με τέτοιο κρύο;");
-        u5.addToArrayListOfUserPost("07/01/2017 16:15:15, Nikos \nΕπιτέλους είδαμε άσπρη μέρα");
-
-        Group g1 = new Group("WebGurus","A group for web passionates");
-        Group g2 = new ClosedGroup("ExamSolutions","Solutions to common exam questions");
-
-        pamakBookUsers.add(u1);
-        pamakBookUsers.add(u2);
-        pamakBookUsers.add(u3);
-        pamakBookUsers.add(u4);
-        pamakBookUsers.add(u5);
-        pamakBookUsers.add(u6);
-
-
-        window = primaryStage;
+        Console console = new Console();
+        pamakBookUsers = Initializer.initialize(console);
 
         /**
          * Text Fields
          */
         userNameTextField = new TextField();
-        mailTextField = new TextField();
+        emailTextField    = new TextField();
 
         userNameTextField.setPromptText("User name");
-        mailTextField.setPromptText("E-mail");
+        emailTextField.setPromptText("E-mail");
 
         /**
          * Buttons
@@ -73,94 +51,30 @@ public class Main extends Application{
         createUserButton    = new Button("Create user");
         logInButton         = new Button("Log in");
         savePamakBookButton = new Button("Save Pamak Book");
-        editUsersButton     = new Button("Edit users");
         loadPamakBookButton = new Button("Load Pamak Book");
+        editUsersButton     = new Button("Edit users");
 
         /**
          * Button Actions
          */
-        createUserButton.setOnAction(event -> {
-            CreateUser.display(pamakBookUsers, console);
-
-            comboBox1.getItems().clear();
-            comboBox2.getItems().clear();
-
-            for(User u: pamakBookUsers)
-                if(!(u.getEmail().equals("break"))) {
-                    comboBox1.getItems().add(u.getName());
-                    comboBox2.getItems().add(u.getName());
-                }
-        });
-
-
-        logInButton.setOnAction(event -> {
-            User tempUser = new User();
-
-            String name  = userNameTextField.getText();
-            String email = mailTextField.getText();
-
-            for(User u: pamakBookUsers)
-                if(u.getName().equals(name) && u.getEmail().equals(email)) {
-                    flag = true;
-                    tempUser = u;
-                }
-
-            if(flag) {
-                AlertBox.display("User " + tempUser.getName() + " found");
-                UserPage.display(tempUser, pamakBookUsers);
-            }
-            else
-                AlertBox.display("User did not found");
-        });
-
-
-        savePamakBookButton.setOnAction(event -> {
-            try {
-                FileOutputStream fileOutputStream     = new FileOutputStream("C:\\Users\\Dimitris\\workspace\\Java projects\\PamakBook.v3\\src\\pamakbook.ser");
-                ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-                objectOutputStream.writeObject(pamakBookUsers);
-                objectOutputStream.close();
-                fileOutputStream.close();
-                console.setTextArea("Pamak Book has been saved");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-
-
-        loadPamakBookButton.setOnAction(event -> {
-            try {
-                FileInputStream fileInputStream     = new FileInputStream("C:\\Users\\Dimitris\\workspace\\Java projects\\PamakBook.v3\\src\\pamakbook.ser");
-                ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-                arrayList = (ArrayList<User>) objectInputStream.readObject();
-                objectInputStream.close();
-                fileInputStream.close();
-
-                String text = "Load\n";
-
-                for(User u : arrayList)
-                    text += u.getName() + " " + u.getEmail() + "\n";
-                console.setTextArea(text);
-
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        });
-
-
+        createUserButton.setOnAction(event -> createUserAction(console));
+        logInButton.setOnAction(event -> logInAction(console));
+        savePamakBookButton.setOnAction(event -> serializing(console));
+        loadPamakBookButton.setOnAction(event -> deserializing(console));
         editUsersButton.setOnAction(event -> {
-            window.setScene(scene2);
+            comboBox1.requestFocus();
+            window.setScene(editUserScene);
             window.setTitle("Edit Users Page");
         });
 
         /**
-         * First Panel (Main Page)
+         * Main Page Panel
          */
-        GridPane gridPane1 = new GridPane();
+        GridPane mainPagePanel = new GridPane();
 
-        gridPane1.setPadding(new Insets(8,8,8,8));
-        gridPane1.setVgap(8);
-        gridPane1.setHgap(8);
+        mainPagePanel.setPadding(new Insets(8,8,8,8));
+        mainPagePanel.setVgap(8);
+        mainPagePanel.setHgap(8);
 
         GridPane.setConstraints(createUserButton,0,0);
         GridPane.setConstraints(editUsersButton, 0,1);
@@ -168,18 +82,33 @@ public class Main extends Application{
         GridPane.setConstraints(loadPamakBookButton,0,3);
         GridPane.setConstraints(logInButton,1,0);
         GridPane.setConstraints(userNameTextField,1,1);
-        GridPane.setConstraints(mailTextField,1,2);
+        GridPane.setConstraints(emailTextField,1,2);
 
-        gridPane1.getChildren().addAll(loadPamakBookButton, editUsersButton, createUserButton, savePamakBookButton, logInButton, userNameTextField, mailTextField);
+        mainPagePanel.getChildren().addAll(loadPamakBookButton, editUsersButton, createUserButton, savePamakBookButton,
+                logInButton, userNameTextField, emailTextField);
 
         /**
-         * First Scene
+         * Main Page Scene
          */
-        scene1 = new Scene(gridPane1, 300, 150);
+        mainPageScene = new Scene(mainPagePanel, 300, 150);
+
+        /**
+         * Window settings
+         */
+        console.consoleDisplay();
+        deserializing(console);
+        createUserButton.requestFocus();
+        window.show();
+        window.setScene(mainPageScene);
+        window.setTitle("Main Page");
+        window.getIcons().add(new Image("uom.gif"));
+        window.centerOnScreen();
+        window.setOnCloseRequest(event -> console.closeConsole());
+
 
 
         /**
-         * Second Panel (Edit Users Page)
+         * Edit Users Page
          */
 
         /**
@@ -191,6 +120,8 @@ public class Main extends Application{
         addToGroupButton       = new Button("Add to group");
         addToClosedGroupButton = new Button("Add to closed group");
         backToMainPageButton   = new Button("Back to Main Page");
+        printGroupButton       = new Button("Print group");
+        printClosedGroupButton = new Button("Print closed group");
 
         Tooltip tooltip  = new Tooltip();
         Tooltip tooltip2 = new Tooltip();
@@ -223,76 +154,20 @@ public class Main extends Application{
         /**
          * Button Actions
          */
-        addFriendButton.setOnAction(event -> {
-            User tempUser = new User();
-
-            for(User u: pamakBookUsers)
-                if(u.getName().equals(comboBox1.getValue())) {
-                    tempUser = u;
-                    break;
-                }
-
-            for(User u: pamakBookUsers)
-                if(u.getName().equals(comboBox2.getValue())) {
-                    tempUser.addFriend(u, console);
-                    break;
-                }
-        });
-
-
+        addFriendButton.setOnAction(event -> addFriendAction(console));
+        findMutualFriendButton.setOnAction(event -> findMutualAction(console));
+        printFriendsButton.setOnAction(event -> printFriendAction(console));
+        addToGroupButton.setOnAction(event -> addToGroupAction(console));
+        addToClosedGroupButton.setOnAction(event -> addToClosedGroupAction(console));
+        printGroupButton.setOnAction(event -> Initializer.getGroup1().printInfo(console));
+        printClosedGroupButton.setOnAction(event -> Initializer.getGroup2().printInfo(console));
         backToMainPageButton.setOnAction(event -> {
-            window.setScene(scene1);
+            window.setScene(mainPageScene);
             window.setTitle("Main Page");
         });
 
-
-        findMutualFriendButton.setOnAction(event -> {
-            User tempUser = new User();
-            for(User u: pamakBookUsers)
-                if(u.getName().equals(comboBox1.getValue())) {
-                    tempUser = u;
-                    break;
-                }
-
-            for(User u: pamakBookUsers)
-                if(u.getName().equals(comboBox2.getValue())) {
-                    tempUser.mutualFriends(u, console);
-                    break;
-                }
-        });
-
-
-        printFriendsButton.setOnAction(event -> {
-            User tempUser = new User();
-            for(User u: pamakBookUsers) {
-                if(u.getName().equals(comboBox1.getValue())) {
-                    tempUser = u;
-                    break;
-                }
-            }
-            tempUser.printFriends(console);
-        });
-
-
-        addToGroupButton.setOnAction(event -> {
-            for(User u: pamakBookUsers)
-                if(u.getName().equals(comboBox1.getValue())) {
-                    g1.addToGroup(u, console);
-                    break;
-                }
-        });
-
-
-        addToClosedGroupButton.setOnAction(event -> {
-            for(User u: pamakBookUsers)
-                if(u.getName().equals(comboBox1.getValue())) {
-                    g2.addToGroup(u, console);
-                    break;
-                }
-        });
-
         /**
-         * Second Panel
+         * User Edit Page Panel
          */
         GridPane gridPane2 = new GridPane();
 
@@ -301,30 +176,149 @@ public class Main extends Application{
         gridPane2.setHgap(8);
 
         GridPane.setConstraints(addFriendButton,1,0);
-        GridPane.setConstraints(findMutualFriendButton, 1,1);
-        GridPane.setConstraints(printFriendsButton,1,2);
-        GridPane.setConstraints(addToGroupButton,1,3);
-        GridPane.setConstraints(addToClosedGroupButton,1,4);
-        GridPane.setConstraints(backToMainPageButton,0,6);
+        GridPane.setConstraints(addToGroupButton,1,1);
+        GridPane.setConstraints(addToClosedGroupButton,1,2);
+        GridPane.setConstraints(findMutualFriendButton, 1,3);
+        GridPane.setConstraints(printFriendsButton,2,0);
+        GridPane.setConstraints(printGroupButton,2,1);
+        GridPane.setConstraints(printClosedGroupButton,2,2);
         GridPane.setConstraints(label,0,0);
         GridPane.setConstraints(comboBox1,0,1);
         GridPane.setConstraints(comboBox2,0,2);
+        GridPane.setConstraints(backToMainPageButton,0,5);
 
-        gridPane2.getChildren().addAll(label,comboBox1, comboBox2, addFriendButton, findMutualFriendButton, printFriendsButton, addToClosedGroupButton, addToGroupButton, backToMainPageButton);
-
-        /**
-         * Second Scene
-         */
-        scene2 = new Scene(gridPane2, 300, 220);
+        gridPane2.getChildren().addAll(printClosedGroupButton, printGroupButton, label,comboBox1, comboBox2, addFriendButton,
+                findMutualFriendButton, printFriendsButton, addToClosedGroupButton, addToGroupButton, backToMainPageButton);
 
         /**
-         * Window settings
+         * User Edit Page Scene
          */
-        window.show();
-        window.setScene(scene1);
-        window.setTitle("Main Page");
-        window.getIcons().add(new Image("uom.gif"));
-        createUserButton.requestFocus();
-        window.centerOnScreen();
+        editUserScene = new Scene(gridPane2, 400, 180);
+    }
+
+    public void serializing(Console console) {
+        try {
+            FileOutputStream fileOutputStream     = new FileOutputStream("C:\\Users\\Dimitris\\workspace\\Java projects\\PamakBook.v3\\src\\pamakbook.ser");
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+
+            objectOutputStream.writeObject(pamakBookUsers);
+            objectOutputStream.close();
+            fileOutputStream.close();
+
+            console.setTextArea("Pamak Book has been saved");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deserializing(Console console) {
+        try {
+            FileInputStream fileInputStream     = new FileInputStream("C:\\Users\\Dimitris\\workspace\\Java projects\\PamakBook.v3\\src\\pamakbook.ser");
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+
+            pamakBookUsers = (ArrayList<User>) objectInputStream.readObject();
+            objectInputStream.close();
+            fileInputStream.close();
+
+            String text = "File loaded\n";
+
+            for(User u : pamakBookUsers)
+                text += u.getName() + " " + u.getEmail() + "\n";
+            console.setTextArea(text);
+
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createUserAction(Console console) {
+        CreateUser.display(pamakBookUsers, console);
+
+        comboBox1.getItems().clear();
+        comboBox2.getItems().clear();
+
+        for(User u: pamakBookUsers)
+            if(!(u.getEmail().equals("break"))) {
+                comboBox1.getItems().add(u.getName());
+                comboBox2.getItems().add(u.getName());
+            }
+    }
+
+    public void logInAction(Console console) {
+        User logInUser = new User();
+
+        String name  = userNameTextField.getText();
+        String email = emailTextField.getText();
+
+        for(User u: pamakBookUsers)
+            if(u.getName().equals(name) && u.getEmail().equals(email)) {
+                logInUser = u;
+                flag = true;
+            }
+
+        if(flag) {
+            AlertBox.display("User " + logInUser.getName() + " found");
+            UserPage.display(logInUser, pamakBookUsers);
+        }
+        else
+            AlertBox.display("User did not found");
+    }
+
+    public void addFriendAction(Console console) {
+        User tempUser = new User();
+
+        for(User u: pamakBookUsers)
+            if(u.getName().equals(comboBox1.getValue())) {
+                tempUser = u;
+                break;
+            }
+
+        for(User u: pamakBookUsers)
+            if(u.getName().equals(comboBox2.getValue())) {
+                tempUser.addFriend(u, console);
+                break;
+            }
+    }
+
+    public void findMutualAction(Console console) {
+        User tempUser = new User();
+        for(User u: pamakBookUsers)
+            if(u.getName().equals(comboBox1.getValue())) {
+                tempUser = u;
+                break;
+            }
+
+        for(User u: pamakBookUsers)
+            if(u.getName().equals(comboBox2.getValue())) {
+                tempUser.mutualFriends(u, console);
+                break;
+            }
+    }
+
+    public void printFriendAction(Console console) {
+        User tempUser = new User();
+        for(User u: pamakBookUsers) {
+            if(u.getName().equals(comboBox1.getValue())) {
+                tempUser = u;
+                break;
+            }
+        }
+        tempUser.printFriends(console);
+    }
+
+    public void addToGroupAction(Console console) {
+        for(User u: pamakBookUsers)
+            if(u.getName().equals(comboBox1.getValue())) {
+                Initializer.getGroup1().addToGroup(u, console);
+                break;
+            }
+    }
+
+    public void addToClosedGroupAction(Console console) {
+        for(User u: pamakBookUsers)
+            if(u.getName().equals(comboBox1.getValue())) {
+                Initializer.getGroup2().addToGroup(u, console);
+                break;
+            }
     }
 }

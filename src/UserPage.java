@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 
-
 public class UserPage {
 
     public static void display(User logInUser, ArrayList<User> pamakBookUsers) {
