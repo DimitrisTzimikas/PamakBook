@@ -11,10 +11,6 @@ import java.util.ArrayList;
 
 public class GUIMain extends Application{
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
     private Stage            window;
     private Scene            mainPageScene, editUserScene;
     private Button           loadPamakBookButton, addFriendButton, findMutualFriendButton, printFriendsButton,
@@ -26,6 +22,10 @@ public class GUIMain extends Application{
     private ArrayList<User> pamakBookUsers = new ArrayList<>();
     private boolean         flag           = false;
     private GUIConsole      console        = new GUIConsole();
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
