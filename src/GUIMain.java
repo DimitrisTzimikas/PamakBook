@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.util.ArrayList;
 
-public class Main extends Application{
+public class GUIMain extends Application{
 
     public static void main(String[] args) {
         launch(args);
@@ -31,9 +31,9 @@ public class Main extends Application{
         window = primaryStage;
 
         /**
-         * Initialize Users and Groups and Console
+         * Initialize Users and Groups and console
          */
-        Console console = new Console();
+        GUIConsole console = new GUIConsole();
         pamakBookUsers = Initializer.initialize(console);
 
         /**
@@ -58,7 +58,7 @@ public class Main extends Application{
          * Button Actions
          */
         createUserButton.setOnAction(event -> createUserAction(console));
-        logInButton.setOnAction(event -> logInAction(console));
+        logInButton.setOnAction(event -> logInAction());
         savePamakBookButton.setOnAction(event -> serializing(console));
         loadPamakBookButton.setOnAction(event -> deserializing(console));
         editUsersButton.setOnAction(event -> {
@@ -196,7 +196,7 @@ public class Main extends Application{
         editUserScene = new Scene(gridPane2, 400, 180);
     }
 
-    public void serializing(Console console) {
+    public void serializing(GUIConsole console) {
         try {
             FileOutputStream fileOutputStream     = new FileOutputStream("C:\\Users\\Dimitris\\workspace\\Java projects\\PamakBook.v3\\src\\pamakbook.ser");
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
@@ -211,7 +211,7 @@ public class Main extends Application{
         }
     }
 
-    public void deserializing(Console console) {
+    public void deserializing(GUIConsole console) {
         try {
             FileInputStream fileInputStream     = new FileInputStream("C:\\Users\\Dimitris\\workspace\\Java projects\\PamakBook.v3\\src\\pamakbook.ser");
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
@@ -231,8 +231,8 @@ public class Main extends Application{
         }
     }
 
-    public void createUserAction(Console console) {
-        CreateUser.display(pamakBookUsers, console);
+    public void createUserAction(GUIConsole console) {
+        GUICreateUser.display(pamakBookUsers, console);
 
         comboBox1.getItems().clear();
         comboBox2.getItems().clear();
@@ -244,7 +244,7 @@ public class Main extends Application{
             }
     }
 
-    public void logInAction(Console console) {
+    public void logInAction() {
         User logInUser = new User();
 
         String name  = userNameTextField.getText();
@@ -257,14 +257,14 @@ public class Main extends Application{
             }
 
         if(flag) {
-            AlertBox.display("User " + logInUser.getName() + " found");
-            UserPage.display(logInUser, pamakBookUsers);
+            GUIAlertBox.display("User " + logInUser.getName() + " found");
+            GUIUserPage.display(logInUser);
         }
         else
-            AlertBox.display("User did not found");
+            GUIAlertBox.display("User did not found");
     }
 
-    public void addFriendAction(Console console) {
+    public void addFriendAction(GUIConsole console) {
         User tempUser = new User();
 
         for(User u: pamakBookUsers)
@@ -280,7 +280,7 @@ public class Main extends Application{
             }
     }
 
-    public void findMutualAction(Console console) {
+    public void findMutualAction(GUIConsole console) {
         User tempUser = new User();
         for(User u: pamakBookUsers)
             if(u.getName().equals(comboBox1.getValue())) {
@@ -295,7 +295,7 @@ public class Main extends Application{
             }
     }
 
-    public void printFriendAction(Console console) {
+    public void printFriendAction(GUIConsole console) {
         User tempUser = new User();
         for(User u: pamakBookUsers) {
             if(u.getName().equals(comboBox1.getValue())) {
@@ -306,7 +306,7 @@ public class Main extends Application{
         tempUser.printFriends(console);
     }
 
-    public void addToGroupAction(Console console) {
+    public void addToGroupAction(GUIConsole console) {
         for(User u: pamakBookUsers)
             if(u.getName().equals(comboBox1.getValue())) {
                 Initializer.getGroup1().addToGroup(u, console);
@@ -314,7 +314,7 @@ public class Main extends Application{
             }
     }
 
-    public void addToClosedGroupAction(Console console) {
+    public void addToClosedGroupAction(GUIConsole console) {
         for(User u: pamakBookUsers)
             if(u.getName().equals(comboBox1.getValue())) {
                 Initializer.getGroup2().addToGroup(u, console);

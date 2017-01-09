@@ -8,14 +8,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 
-public class AlertBox {
+public class GUIAlertBox {
 
     public static void display(String message) {
 
         /**
          * Initialize Stage
          */
-
         Stage window = new Stage();
 
         /**
@@ -35,7 +34,7 @@ public class AlertBox {
         /**
          * Button & Action
          */
-        Button closeButton = new Button("Close the window");
+        Button closeButton = new Button("Continue");
         closeButton.setOnAction(event -> window.close());
 
         /**

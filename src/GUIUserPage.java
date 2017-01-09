@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 
-public class UserPage {
+public class GUIUserPage {
 
-    public static void display(User logInUser, ArrayList<User> pamakBookUsers) {
+    public static void display(User logInUser) {
 
         ArrayList<String> tempArrayListOfUsersPost = new ArrayList<>();
         ArrayList<User> tempArrayListOfUserFriends = logInUser.getArrayListOfUserFriends();

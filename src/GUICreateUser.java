@@ -8,9 +8,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.util.ArrayList;
 
-public class CreateUser {
+public class GUICreateUser {
 
-    public static void display(ArrayList<User> pamakBookUsers, Console console) {
+    public static void display(ArrayList<User> pamakBookUsers, GUIConsole console) {
 
         Stage window = new Stage();
 
@@ -37,6 +37,7 @@ public class CreateUser {
         Button commitButton = new Button("Commit");
         Button closeButton  = new Button("Close");
 
+        closeButton.setOnAction(event -> window.close());
         commitButton.setOnAction(event -> {
             boolean flag = true;
 
@@ -52,9 +53,6 @@ public class CreateUser {
                 console.setTextArea("User " + userNameTextField.getText() + " has been created");
             }
         });
-
-
-        closeButton.setOnAction(event -> window.close());
 
         /**
          * Panel

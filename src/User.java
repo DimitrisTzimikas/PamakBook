@@ -14,13 +14,13 @@ public class User implements Serializable {
      * @param name
      * @param email
      */
-    public User(String name, String email, Console console) {
+    public User(String name, String email, GUIConsole GUIConsole) {
         this.name = name;
 
         if(email.startsWith("it") && email.endsWith("@uom.edu.gr"))
             this.email = email;
         else {
-            console.setTextArea("User " + this.name + " has not been created. Email format is not acceptable.\n");
+            GUIConsole.setTextArea("User " + this.name + " has not been created. Email format is not acceptable.");
             this.email = "break";
         }
     }
@@ -61,7 +61,7 @@ public class User implements Serializable {
      * να προσθέσουμε τον ίδιο μας ευατό και αν όχι προσθέτει τον φίλο της επιλογής μας.
      * @param aUser
      */
-    public void addFriend(User aUser, Console console) {
+    public void addFriend(User aUser, GUIConsole console) {
         if(this.isHeInMyFriendList(aUser))
             console.setTextArea("You already have this friend in your list.");
         else {
@@ -83,7 +83,7 @@ public class User implements Serializable {
      * @param aUser
      * @return
      */
-    public ArrayList<User> mutualFriends(User aUser, Console console) {
+    public ArrayList<User> mutualFriends(User aUser, GUIConsole console) {
         ArrayList<User> temp = new ArrayList<>();
 
         int count = 0;
@@ -111,7 +111,7 @@ public class User implements Serializable {
     /**
      * Εκτυπώνει τους φίλους του χρήστη
      */
-    public void printFriends(Console console) {
+    public void printFriends(GUIConsole console) {
         String text = "";
         text += this.getName() + " is friend with: " + "\n";
         for(User u : this.arrayListOfUserFriends)

@@ -5,7 +5,8 @@ public class Initializer {
     private static Group g1       = new Group("WebGurus","A group for web passionates");
     private static ClosedGroup g2 = new ClosedGroup("ExamSolutions","Solutions to common exam questions");
 
-    public static ArrayList<User> initialize(Console console) {
+    public static ArrayList<User> initialize(GUIConsole console) {
+
         ArrayList<User> pamakBookUsers = new ArrayList<>();
 
         User u1 = new User("Makis", "it1698@uom.edu.gr", console);

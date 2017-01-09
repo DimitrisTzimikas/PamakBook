@@ -15,7 +15,7 @@ public class Group {
      * @param aUser
      * @return
      */
-    public boolean isItMember(User aUser) {
+    public boolean isHeMember(User aUser) {
         boolean flag = false;
 
         for(User u : arrayGroup)
@@ -28,20 +28,21 @@ public class Group {
     /**
      * Προσθέτει χρήστη στο γκρούπ
      * @param aUser
+     * @param console
      */
-    public void addToGroup(User aUser, Console console) {
-        if(!this.isItMember(aUser)) {
+    public void addToGroup(User aUser, GUIConsole console) {
+        if(!this.isHeMember(aUser)) {
             arrayGroup.add(aUser);
             console.setTextArea(aUser.getName() + " has successfully enrolled in group " + this.name);
         }
         else
-            console.setTextArea(aUser.getName() + " is already member of the Web Gurus group.\n");
+            console.setTextArea(aUser.getName() + " is already member of the Web Gurus group.");
     }
 
     /**
      * Εκτυπώνει τους χρήστες που βρίσκονται στο γκρούπ
      */
-    public void printInfo(Console console) {
+    public void printInfo(GUIConsole console) {
         String text = "";
         text += ("Members of group " + this.name + "\n");
         int count = 0;

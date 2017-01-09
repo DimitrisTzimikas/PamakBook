@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class Console {
+public class GUIConsole {
 
     private TextArea textArea = new TextArea();
     private Stage    window   = new Stage();
