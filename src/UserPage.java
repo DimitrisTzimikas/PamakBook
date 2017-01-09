@@ -19,6 +19,9 @@ public class UserPage {
     public static void display(User logInUser, ArrayList<User> pamakBookUsers) {
 
         ArrayList<String> tempArrayListOfUsersPost = new ArrayList<>();
+        ArrayList<User> tempArrayListOfUserFriends = logInUser.getArrayListOfUserFriends();
+        ArrayList<User> tempArrayListOfSuggFriends;
+        boolean flag = false;
 
         /**
          * Window create
@@ -37,9 +40,24 @@ public class UserPage {
          */
         TextField suggestedFriendTextField = new TextField();
 
-        for(User u : pamakBookUsers)
-            if(!logInUser.isHeInMyFriendList(u) && !logInUser.getName().equals(u.getName()))
-                 suggestedFriendTextField.setText(u.getName());
+        if(!tempArrayListOfUserFriends.isEmpty()) {
+            for(User u : logInUser.getArrayListOfUserFriends()) {
+                tempArrayListOfSuggFriends = u.getArrayListOfUserFriends();
+                for (int i = 0; i < tempArrayListOfSuggFriends.size() ; i++) {
+                    if(!tempArrayListOfSuggFriends.get(i).isHeInMyFriendList(logInUser) && !logInUser.getName().equals(tempArrayListOfSuggFriends.get(i).getName())){
+                        suggestedFriendTextField.setText(tempArrayListOfSuggFriends.get(i).getName());
+                        flag = true;
+                        break;
+                    }
+                }
+                if(flag)
+                    break;
+            }
+
+        }
+        else
+            suggestedFriendTextField.setText("You have no friends");
+
 
         /**
          * Text Area

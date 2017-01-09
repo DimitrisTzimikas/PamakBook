@@ -179,8 +179,8 @@ public class Main extends Application{
         GridPane.setConstraints(addToGroupButton,1,1);
         GridPane.setConstraints(addToClosedGroupButton,1,2);
         GridPane.setConstraints(findMutualFriendButton, 1,3);
-        GridPane.setConstraints(printFriendsButton,2,0);
-        GridPane.setConstraints(printGroupButton,2,1);
+        GridPane.setConstraints(printGroupButton,2,0);
+        GridPane.setConstraints(printFriendsButton,2,1);
         GridPane.setConstraints(printClosedGroupButton,2,2);
         GridPane.setConstraints(label,0,0);
         GridPane.setConstraints(comboBox1,0,1);
