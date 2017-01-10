@@ -6,15 +6,7 @@ public class ClosedGroup extends Group {
     }
 
     public void printInfo(GUIConsole console) {
-        String text = "";
-        text += ("Members of group " + this.name + "\n");
-        int count = 0;
-
-        for(User u : arrayGroup) {
-            count ++;
-            text += count + ": " + u.getName() + "\n";
-        }
-        console.setTextArea(text);
+        super.printInfo(console);
     }
 
     /**
