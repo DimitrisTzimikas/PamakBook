@@ -257,11 +257,12 @@ public class GUIMain extends Application{
         comboBox1.getItems().clear();
         comboBox2.getItems().clear();
 
-        for(User u: pamakBookUsers)
-            if(!(u.getEmail().equals("break"))) {
-                comboBox1.getItems().add(u.getName());
-                comboBox2.getItems().add(u.getName());
-            }
+        for(User u: pamakBookUsers){
+            if((u.getEmail().equals("break")))
+                continue;
+            comboBox1.getItems().add(u.getName());
+            comboBox2.getItems().add(u.getName());
+        }
     }
 
     public void logInAction() {
