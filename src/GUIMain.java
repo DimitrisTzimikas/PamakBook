@@ -197,7 +197,7 @@ public class GUIMain extends Application{
         editUserScene = new Scene(gridPane2, 400, 180);
     }
 
-    public void saveFileAction() {
+    private void saveFileAction() {
         try {
 
             FileChooser fileChooser2 = new FileChooser();
@@ -217,7 +217,7 @@ public class GUIMain extends Application{
         }
     }
 
-    public void loadFileAction() {
+    private void loadFileAction() {
         try {
 
             FileChooser fileChooser = new FileChooser();
@@ -250,7 +250,7 @@ public class GUIMain extends Application{
         }
     }
 
-    public void createUserAction() {
+    private void createUserAction() {
         GUICreateUser.display(pamakBookUsers, console);
 
         comboBox1.getItems().clear();
@@ -264,7 +264,7 @@ public class GUIMain extends Application{
         }
     }
 
-    public void logInAction() {
+    private void logInAction() {
         User logInUser = new User();
 
         String name  = userNameTextField.getText();
@@ -284,7 +284,7 @@ public class GUIMain extends Application{
             GUIAlertBox.display("User did not found");
     }
 
-    public void addFriendAction() {
+    private void addFriendAction() {
         User tempUser = new User();
 
         for(User u: pamakBookUsers)
@@ -300,7 +300,7 @@ public class GUIMain extends Application{
             }
     }
 
-    public void findMutualAction() {
+    private void findMutualAction() {
         User tempUser = new User();
         for(User u: pamakBookUsers)
             if(u.getName().equals(comboBox1.getValue())) {
@@ -315,7 +315,7 @@ public class GUIMain extends Application{
             }
     }
 
-    public void printFriendAction() {
+    private void printFriendAction() {
         User tempUser = new User();
         for(User u: pamakBookUsers) {
             if(u.getName().equals(comboBox1.getValue())) {
@@ -326,7 +326,7 @@ public class GUIMain extends Application{
         tempUser.printFriends(console);
     }
 
-    public void addToGroupAction() {
+    private void addToGroupAction() {
         for(User u: pamakBookUsers)
             if(u.getName().equals(comboBox1.getValue())) {
                 Initializer.getGroup1().addToGroup(u, console);
@@ -334,7 +334,7 @@ public class GUIMain extends Application{
             }
     }
 
-    public void addToClosedGroupAction() {
+    private void addToClosedGroupAction() {
         for(User u: pamakBookUsers)
             if(u.getName().equals(comboBox1.getValue())) {
                 Initializer.getGroup2().addToGroup(u, console);

@@ -15,7 +15,7 @@ public class Group {
      * @param aUser
      * @return
      */
-    public boolean isHeMember(User aUser) {
+    private boolean isHeMember(User aUser) {
         boolean flag = false;
 
         for(User u : arrayGroup)

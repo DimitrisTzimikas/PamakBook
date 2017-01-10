@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class GUICreateUser {
 
-    protected static final String EMAIL_ERROR = "Invalid e-mail";
+    private static final String EMAIL_ERROR = "Invalid e-mail";
 
     public static void display(ArrayList<User> pamakBookUsers, GUIConsole console) {
 
