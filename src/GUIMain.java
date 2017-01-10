@@ -61,8 +61,8 @@ public class GUIMain extends Application{
          */
         createUserButton.setOnAction(event -> createUserAction());
         logInButton.setOnAction(event -> logInAction());
-        savePamakBookButton.setOnAction(event -> serializing());
-        loadPamakBookButton.setOnAction(event -> deserializing());
+        savePamakBookButton.setOnAction(event -> saveFileAction());
+        loadPamakBookButton.setOnAction(event -> loadFileAction());
         editUsersButton.setOnAction(event -> {
             comboBox1.requestFocus();
             window.setScene(editUserScene);
@@ -197,7 +197,7 @@ public class GUIMain extends Application{
         editUserScene = new Scene(gridPane2, 400, 180);
     }
 
-    public void serializing() {
+    public void saveFileAction() {
         try {
 
             FileChooser fileChooser2 = new FileChooser();
@@ -217,7 +217,7 @@ public class GUIMain extends Application{
         }
     }
 
-    public void deserializing() {
+    public void loadFileAction() {
         try {
 
             FileChooser fileChooser = new FileChooser();
@@ -240,11 +240,10 @@ public class GUIMain extends Application{
 
                 comboBox1.getItems().clear();
                 comboBox2.getItems().clear();
-                for(User u: pamakBookUsers)
-                    if(!(u.getEmail().equals("break"))) {
-                        comboBox1.getItems().add(u.getName());
-                        comboBox2.getItems().add(u.getName());
-                    }
+                for(User u: pamakBookUsers) {
+                    comboBox1.getItems().add(u.getName());
+                    comboBox2.getItems().add(u.getName());
+                }
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();

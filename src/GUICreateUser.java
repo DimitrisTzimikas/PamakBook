@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 public class GUICreateUser {
 
+    protected static final String EMAIL_ERROR = "Invalid e-mail";
+
     public static void display(ArrayList<User> pamakBookUsers, GUIConsole console) {
 
         Stage window = new Stage();
@@ -34,24 +36,29 @@ public class GUICreateUser {
         /**
          * Button & Actions
          */
-        Button commitButton = new Button("Commit");
         Button closeButton  = new Button("Close");
+        Button commitButton = new Button("Commit");
 
         closeButton.setOnAction(event -> window.close());
         commitButton.setOnAction(event -> {
-            boolean flag = true;
+            boolean userExistFlag = false;
 
             for (User u : pamakBookUsers) {
-                if (userNameTextField.getText().equals(u.getName()))
-                    flag = false;
-                if (!flag)
-                    break;
+                if (userNameTextField.getText().equals(u.getName()) || emailTextField.getText().equals(u.getEmail())) {
+                    userExistFlag = true;
+                    if(userNameTextField.getText().equals(u.getName()))
+                        console.setTextArea("This username already exists");
+                    else
+                        console.setTextArea("This e-mail already exists");
+                }
             }
 
-            if (flag) {
-                pamakBookUsers.add(new User(userNameTextField.getText(), emailTextField.getText(), console));
-                console.setTextArea("User " + userNameTextField.getText() + " has been created");
-            }
+            if (!userExistFlag)
+                if(emailTextField.getText().startsWith("it") && emailTextField.getText().endsWith("@uom.edu.gr"))
+                    pamakBookUsers.add(new User(userNameTextField.getText(), emailTextField.getText(), console));
+                else
+                    console.setTextArea(EMAIL_ERROR);
+
         });
 
         /**

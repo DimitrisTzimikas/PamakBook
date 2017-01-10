@@ -8,21 +8,15 @@ public class User implements Serializable {
     private ArrayList<User> arrayListOfUserFriends = new ArrayList<>();
     private ArrayList<String> arrayListOfUserPost  = new ArrayList<>();
 
-
     /**
      * Κατασκευαστής που ελέχγει αν το e-mail του χρήστη είναι αποδεκτό
      * @param name
      * @param email
      */
-    public User(String name, String email, GUIConsole GUIConsole) {
+    public User(String name, String email, GUIConsole console) {
         this.name = name;
-
-        if(email.startsWith("it") && email.endsWith("@uom.edu.gr"))
-            this.email = email;
-        else {
-            GUIConsole.setTextArea("User " + this.name + " has not been created. Email format is not acceptable.");
-            this.email = "break";
-        }
+        this.email = email;
+        console.setTextArea("User " + this.name + " has been created");
     }
 
     public User(){
