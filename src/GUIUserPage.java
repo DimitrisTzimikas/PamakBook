@@ -19,9 +19,6 @@ public class GUIUserPage {
     public static void display(User logInUser) {
 
         ArrayList<String> tempArrayListOfUsersPost = new ArrayList<>();
-        ArrayList<User> tempArrayListOfUserFriends = logInUser.getArrayListOfUserFriends();
-        ArrayList<User> tempArrayListOfSuggFriends;
-        boolean flag = false;
 
         /**
          * Window create
@@ -39,58 +36,24 @@ public class GUIUserPage {
          * Text Field
          */
         TextField suggestedFriendTextField = new TextField();
-
-        if(!tempArrayListOfUserFriends.isEmpty()) {
-            for(User u : logInUser.getArrayListOfUserFriends()) {
-                tempArrayListOfSuggFriends = u.getArrayListOfUserFriends();
-                for (int i = 0; i < tempArrayListOfSuggFriends.size() ; i++) {
-                    if(!tempArrayListOfSuggFriends.get(i).isHeMyFriend(logInUser) && !logInUser.getName().equals(tempArrayListOfSuggFriends.get(i).getName())){
-                        suggestedFriendTextField.setText(tempArrayListOfSuggFriends.get(i).getName());
-                        flag = true;
-                        break;
-                    }
-                }
-                if(flag)
-                    break;
-            }
-
-        }
-        else
-            suggestedFriendTextField.setText("You have no friends");
-
+        suggestedFriendTextField.setText(new GUIUserPage().suggestedFriend(logInUser));
 
         /**
          * Text Area
          */
-        TextArea textArea  = new TextArea();
-        TextArea textArea2 = new TextArea();
+        TextArea writePostTextArea  = new TextArea();
+        TextArea friendsPostTextArea = new TextArea();
 
-        textArea.setPromptText("Enter your post here");
-        textArea.setWrapText(true);
-        textArea.setPrefWidth(250);
-        textArea.setPrefHeight(200);
+        writePostTextArea.setPromptText("Enter your post here");
+        writePostTextArea.setWrapText(true);
+        writePostTextArea.setPrefWidth(250);
+        writePostTextArea.setPrefHeight(200);
 
-        textArea2.setWrapText(true);
-        textArea2.setPrefWidth(250);
-        textArea2.setPrefHeight(200);
+        friendsPostTextArea.setWrapText(true);
+        friendsPostTextArea.setPrefWidth(250);
+        friendsPostTextArea.setPrefHeight(200);
 
-        String message = "";
-
-        for(int i = 0; i < logInUser.getArrayListOfUserPost().size(); i++)
-            tempArrayListOfUsersPost.add(logInUser.getArrayListOfUserPost().get(i));
-
-        if(logInUser.getArrayListOfUserFriends() != null){
-            for(User u : logInUser.getArrayListOfUserFriends())
-                for(int j = 0; j < u.getArrayListOfUserPost().size(); j++)
-                    tempArrayListOfUsersPost.add(u.getArrayListOfUserPost().get(j));
-        }
-
-        Collections.sort(tempArrayListOfUsersPost);
-
-        for(String s : tempArrayListOfUsersPost)
-            message += s +"\n";
-
-        textArea2.setText(message);
+        friendsPostTextArea.setText(new GUIUserPage().friendsPost(tempArrayListOfUsersPost, logInUser));
 
         /**
          * Buttons
@@ -111,12 +74,10 @@ public class GUIUserPage {
             tempArrayListOfUsersPost.clear();
             window.close();
         });
-
-
         postButton.setOnAction(event -> {
 
-            logInUser.addToArrayListOfUserPost(dateFormat.format(date) + ", " + logInUser.getName() + " \n" + textArea.getText());
-            tempArrayListOfUsersPost.add(dateFormat.format(date) + ", " + logInUser.getName() + " \n" + textArea.getText());
+            logInUser.addToArrayListOfUserPost(dateFormat.format(date) + ", " + logInUser.getName() + " \n" + writePostTextArea.getText());
+            tempArrayListOfUsersPost.add(      dateFormat.format(date) + ", " + logInUser.getName() + " \n" + writePostTextArea.getText());
 
             Collections.sort(tempArrayListOfUsersPost);
 
@@ -125,7 +86,7 @@ public class GUIUserPage {
             for(String s : tempArrayListOfUsersPost)
                 m += s.toString() +"\n";
 
-            textArea2.setText(m);
+            friendsPostTextArea.setText(m);
         });
 
         /**
@@ -138,14 +99,14 @@ public class GUIUserPage {
 
         GridPane.setConstraints(userNameLabel,0,0);;
         GridPane.setConstraints(closeButton,1,0);
-        GridPane.setConstraints(textArea,0,1);
+        GridPane.setConstraints(writePostTextArea,0,1);
         GridPane.setConstraints(postButton,1,1);
-        GridPane.setConstraints(textArea2, 0,2);
+        GridPane.setConstraints(friendsPostTextArea, 0,2);
         GridPane.setConstraints(recentPostLabel, 1,2);
         GridPane.setConstraints(suggestedFriendLabel, 0, 3);
         GridPane.setConstraints(suggestedFriendTextField,1, 3);
 
-        gridPane.getChildren().addAll(suggestedFriendLabel, suggestedFriendTextField, recentPostLabel,textArea2, postButton, textArea, userNameLabel, closeButton);
+        gridPane.getChildren().addAll(suggestedFriendLabel, suggestedFriendTextField, recentPostLabel,friendsPostTextArea, postButton, writePostTextArea, userNameLabel, closeButton);
 
         /**
          * Scene
@@ -162,6 +123,52 @@ public class GUIUserPage {
         window.centerOnScreen();
         window.setScene(scene);
         window.showAndWait();
+    }
+
+    private String suggestedFriend(User logInUser) {
+        String message = "";
+
+        //If log in user friend list is not empty:
+        if(!logInUser.getArrayListOfUserFriends().isEmpty()) {
+            //Traverse the array list of log in user friends
+            for(User friendOfLogIn: logInUser.getArrayListOfUserFriends()) {
+                //Traverse the array list of log in user friend friends
+                for(User friendOfTemp: friendOfLogIn.getArrayListOfUserFriends()) {
+                    //Checks if the user who logged in is in the list of his friend friends list
+                    //and finds if the log in user and his friends have not mutual friends
+                    if(!logInUser.equals(friendOfTemp) && !friendOfTemp.isHeMyFriend(logInUser))
+                        message = friendOfTemp.getName();
+                }
+            }
+        }
+        else
+            message = "You have no friends";
+        return message;
+    }
+
+    private String friendsPost(ArrayList<String> tempArrayListOfUsersPost, User logInUser) {
+        String message = "";
+
+        //Adds to post list the posts of log in user
+        for(int i = 0; i < logInUser.getArrayListOfUserPost().size(); i++)
+            tempArrayListOfUsersPost.add(logInUser.getArrayListOfUserPost().get(i));
+
+        //If log in user friend list is not empty:
+        if(!logInUser.getArrayListOfUserFriends().isEmpty()){
+            //Traverse the log in user friends
+            for(User u : logInUser.getArrayListOfUserFriends())
+                //Gets the posts of log in user friends
+                for(int j = 0; j < u.getArrayListOfUserPost().size(); j++)
+                    tempArrayListOfUsersPost.add(u.getArrayListOfUserPost().get(j));
+        }
+
+        //Sort the posts
+        Collections.sort(tempArrayListOfUsersPost);
+
+        for(String s : tempArrayListOfUsersPost)
+            message += s +"\n";
+
+        return message;
     }
 
 }
