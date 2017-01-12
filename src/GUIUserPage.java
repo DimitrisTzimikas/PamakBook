@@ -44,7 +44,7 @@ public class GUIUserPage {
             for(User u : logInUser.getArrayListOfUserFriends()) {
                 tempArrayListOfSuggFriends = u.getArrayListOfUserFriends();
                 for (int i = 0; i < tempArrayListOfSuggFriends.size() ; i++) {
-                    if(!tempArrayListOfSuggFriends.get(i).isHeInMyFriendList(logInUser) && !logInUser.getName().equals(tempArrayListOfSuggFriends.get(i).getName())){
+                    if(!tempArrayListOfSuggFriends.get(i).isHeMyFriend(logInUser) && !logInUser.getName().equals(tempArrayListOfSuggFriends.get(i).getName())){
                         suggestedFriendTextField.setText(tempArrayListOfSuggFriends.get(i).getName());
                         flag = true;
                         break;

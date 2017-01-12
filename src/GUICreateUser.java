@@ -43,6 +43,7 @@ public class GUICreateUser {
         commitButton.setOnAction(event -> {
             boolean userExistFlag = false;
 
+            //Checks if name or e-mail already exists
             for (User u : pamakBookUsers) {
                 if (userNameTextField.getText().equals(u.getName()) || emailTextField.getText().equals(u.getEmail())) {
                     userExistFlag = true;
@@ -53,6 +54,8 @@ public class GUICreateUser {
                 }
             }
 
+            //If the values does not exists in database it checks if the
+            //e-mail is valid and then it creates the user, otherwise it prints error
             if (!userExistFlag)
                 if(emailTextField.getText().startsWith("it") && emailTextField.getText().endsWith("@uom.edu.gr"))
                     pamakBookUsers.add(new User(userNameTextField.getText(), emailTextField.getText(), console));

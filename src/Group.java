@@ -11,7 +11,7 @@ public class Group {
     }
 
     /**
-     * Ελέγχει αν είναι μέλος του γκρουπ ή όχι
+     * Checks if a user is member of the group
      * @param aUser
      * @return
      */
@@ -26,21 +26,23 @@ public class Group {
     }
 
     /**
-     * Προσθέτει χρήστη στο γκρούπ
+     * Adds a user to the group
      * @param aUser
      * @param console
      */
     public void addToGroup(User aUser, GUIConsole console) {
-        if(!this.isHeMember(aUser)) {
+        if(this.isHeMember(aUser))
+            console.setTextArea(aUser.getName() + " is already member of the Web Gurus group.");
+        else {
             arrayGroup.add(aUser);
             console.setTextArea(aUser.getName() + " has successfully enrolled in group " + this.name);
         }
-        else
-            console.setTextArea(aUser.getName() + " is already member of the Web Gurus group.");
+
     }
 
     /**
-     * Εκτυπώνει τους χρήστες που βρίσκονται στο γκρούπ
+     * Prints the users of the group
+     * @param console
      */
     public void printInfo(GUIConsole console) {
         String text = "";

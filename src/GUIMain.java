@@ -18,10 +18,9 @@ public class GUIMain extends Application{
                              savePamakBookButton, editUsersButton, printGroupButton,       printClosedGroupButton,  addToClosedGroupButton;
     private TextField        userNameTextField, emailTextField;
     private ComboBox<String> comboBox1, comboBox2;
-
-    private ArrayList<User> pamakBookUsers = new ArrayList<>();
-    private boolean         flag           = false;
-    private GUIConsole      console        = new GUIConsole();
+    private ArrayList<User>  pamakBookUsers = new ArrayList<>();
+    private GUIConsole       console        = new GUIConsole();
+    private boolean          flag           = false;
 
     public static void main(String[] args) {
         launch(args);
@@ -35,7 +34,6 @@ public class GUIMain extends Application{
         /**
          * Initialize Users and Groups and console
          */
-
         pamakBookUsers = Initializer.initialize(console);
 
         /**
@@ -200,11 +198,11 @@ public class GUIMain extends Application{
     private void saveFileAction() {
         try {
 
-            FileChooser fileChooser2 = new FileChooser();
-            fileChooser2.setTitle("Save");
-            File chosenFile2 = fileChooser2.showSaveDialog(window);
+            FileChooser saveFileChooser = new FileChooser();
+            saveFileChooser.setTitle("Save");
+            File saveChosenFile = saveFileChooser.showSaveDialog(window);
 
-            FileOutputStream fileOutputStream     = new FileOutputStream(chosenFile2);
+            FileOutputStream fileOutputStream     = new FileOutputStream(saveChosenFile);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
             objectOutputStream.writeObject(pamakBookUsers);
@@ -234,10 +232,12 @@ public class GUIMain extends Application{
 
                 String text = "File loaded\n";
 
+                //Prints the loaded users in the console
                 for(User u : pamakBookUsers)
                     text += u.getName() + " " + u.getEmail() + "\n";
                 console.setTextArea(text);
 
+                //Clears the combo boxes and load them with the new values
                 comboBox1.getItems().clear();
                 comboBox2.getItems().clear();
                 for(User u: pamakBookUsers) {
@@ -257,8 +257,6 @@ public class GUIMain extends Application{
         comboBox2.getItems().clear();
 
         for(User u: pamakBookUsers){
-            if((u.getEmail().equals("break")))
-                continue;
             comboBox1.getItems().add(u.getName());
             comboBox2.getItems().add(u.getName());
         }
